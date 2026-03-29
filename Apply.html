@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apply – PassportIndia</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="apply-page">
+
+<nav id="mainNav" class="scrolled">
+  <a class="logo" href="index.html">
+    <div class="logo-mark"><i class="fa-solid fa-passport"></i></div>
+    <span class="logo-text">Passport<span>India</span></span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a class="nav-link" href="track.html">Track Status</a>
+    <a class="nav-cta" href="apply.html">Apply Now </a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════
+     STEP 0: SERVICE PICKER
+═══════════════════════════════ -->
+<div id="step-picker" class="service-picker-section">
+  <div class="picker-header">
+    <div class="section-eyebrow" style="justify-content:center;">Step 1 of 5</div>
+    <h2>Which service do you need?</h2>
+    <p>Choose the one that fits your situation. Not sure? <a href="index.html#consultation" style="color:var(--accent);font-weight:600;">Talk to an expert for free.</a></p>
+  </div>
+  <div class="service-picker-grid">
+    <div class="picker-card" onclick="selectService('fresh')" id="pick-fresh">
+      <div class="picker-icon"><i class="fa-regular fa-user"></i></div>
+      <h4>Fresh Passport</h4>
+      <p>Applying for the very first time</p>
+      <span class="picker-badge">First-timers</span>
+    </div>
+    <div class="picker-card" onclick="selectService('renewal')" id="pick-renewal">
+      <div class="picker-icon"><i class="fa-solid fa-arrows-rotate"></i></div>
+      <h4>Renewal</h4>
+      <p>Passport expired or about to expire</p>
+      <span class="picker-badge">Faster process</span>
+    </div>
+    <div class="picker-card" onclick="selectService('tatkaal')" id="pick-tatkaal">
+      <div class="picker-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+      <h4>Tatkaal (Urgent)</h4>
+      <p>Need it in 7 days for emergency travel</p>
+      <span class="picker-badge">7-day delivery</span>
+    </div>
+    <div class="picker-card" onclick="selectService('child')" id="pick-child">
+      <div class="picker-icon"><i class="fa-solid fa-child"></i></div>
+      <h4>Child Passport</h4>
+      <p>Applying for your child (under 18)</p>
+      <span class="picker-badge">Family-friendly</span>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:36px;">
+    <button class="btn-next" id="btn-start" onclick="startForm()" disabled style="opacity:0.45;cursor:not-allowed;padding:15px 40px;font-size:1rem;">
+      Continue with selected service <i class="fa-solid fa-arrow-right"></i>
+    </button>
+    <p style="font-size:0.8rem;color:var(--ink-soft);margin-top:12px;"><i class="fa-solid fa-shield-halved"></i> Your data is saved automatically and never shared</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     MULTI-STEP FORM
+═══════════════════════════════ -->
+<div id="form-wrapper" style="display:none;padding:48px 48px 80px;max-width:900px;margin:0 auto;">
+
+  <!-- Stepper -->
+  <div class="stepper" id="stepper">
+    <div class="stepper-col">
+      <div class="stepper-circle active" id="sc-1">1</div>
+      <div class="stepper-label active" id="sl-1">Personal</div>
+    </div>
+    <div class="stepper-line" id="sline-1"></div>
+    <div class="stepper-col">
+      <div class="stepper-circle" id="sc-2">2</div>
+      <div class="stepper-label" id="sl-2">Address</div>
+    </div>
+    <div class="stepper-line" id="sline-2"></div>
+    <div class="stepper-col">
+      <div class="stepper-circle" id="sc-3">3</div>
+      <div class="stepper-label" id="sl-3">Documents</div>
+    </div>
+    <div class="stepper-line" id="sline-3"></div>
+    <div class="stepper-col">
+      <div class="stepper-circle" id="sc-4">4</div>
+      <div class="stepper-label" id="sl-4">Appointment</div>
+    </div>
+    <div class="stepper-line" id="sline-4"></div>
+    <div class="stepper-col">
+      <div class="stepper-circle" id="sc-5">5</div>
+      <div class="stepper-label" id="sl-5">Review</div>
+    </div>
+  </div>
+
+  <!-- ── STEP 1: Personal Info ── -->
+  <div class="form-card" id="step-1">
+    <div class="form-card-header">
+      <div>
+        <h3><i class="fa-solid fa-user" style="color:var(--accent);font-size:1.1rem;"></i> Personal Information</h3>
+        <p>Fill in your personal details exactly as they appear on your Aadhaar card.</p>
+      </div>
+      <div class="autosave-badge"><div class="autosave-dot"></div> <span id="save-label-1">Auto-saving</span></div>
+    </div>
+
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>First Name <span class="required">*</span></label>
+        <input type="text" id="f-firstname" placeholder="As on Aadhaar" oninput="autoSave()">
+        <div class="error-msg" id="err-firstname"><i class="fa-solid fa-circle-exclamation"></i> Please enter your first name</div>
+      </div>
+      <div class="form-group">
+        <label>Last Name <span class="required">*</span></label>
+        <input type="text" id="f-lastname" placeholder="As on Aadhaar" oninput="autoSave()">
+        <div class="error-msg" id="err-lastname"><i class="fa-solid fa-circle-exclamation"></i> Please enter your last name</div>
+      </div>
+    </div>
+    <div class="form-row-3">
+      <div class="form-group">
+        <label>Date of Birth <span class="required">*</span></label>
+        <input type="date" id="f-dob" oninput="autoSave()">
+        <div class="error-msg" id="err-dob"><i class="fa-solid fa-circle-exclamation"></i> Please enter your date of birth</div>
+      </div>
+      <div class="form-group">
+        <label>Gender <span class="required">*</span></label>
+        <select id="f-gender" onchange="autoSave()">
+          <option value="">— Select —</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+        <div class="error-msg" id="err-gender"><i class="fa-solid fa-circle-exclamation"></i> Please select your gender</div>
+      </div>
+      <div class="form-group">
+        <label>Marital Status <span class="required">*</span></label>
+        <select id="f-marital" onchange="autoSave()">
+          <option value="">— Select —</option>
+          <option>Single</option>
+          <option>Married</option>
+          <option>Divorced</option>
+          <option>Widowed</option>
+        </select>
+        <div class="error-msg" id="err-marital"><i class="fa-solid fa-circle-exclamation"></i> Please select marital status</div>
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>Mobile Number <span class="required">*</span></label>
+        <input type="tel" id="f-mobile" placeholder="10-digit mobile number" maxlength="10" oninput="autoSave()">
+        <div class="error-msg" id="err-mobile"><i class="fa-solid fa-circle-exclamation"></i> Please enter a valid 10-digit mobile number</div>
+      </div>
+      <div class="form-group">
+        <label>Email Address <span class="required">*</span></label>
+        <input type="email" id="f-email" placeholder="you@email.com" oninput="autoSave()">
+        <div class="error-msg" id="err-email"><i class="fa-solid fa-circle-exclamation"></i> Please enter a valid email address</div>
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>Father's Full Name <span class="required">*</span></label>
+        <input type="text" id="f-father" placeholder="As on Aadhaar" oninput="autoSave()">
+        <div class="error-msg" id="err-father"><i class="fa-solid fa-circle-exclamation"></i> Please enter father's name</div>
+      </div>
+      <div class="form-group">
+        <label>Mother's Full Name <span class="required">*</span></label>
+        <input type="text" id="f-mother" placeholder="As on Aadhaar" oninput="autoSave()">
+        <div class="error-msg" id="err-mother"><i class="fa-solid fa-circle-exclamation"></i> Please enter mother's name</div>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-back" onclick="goToPicker()"><i class="fa-solid fa-arrow-left"></i> Change Service</button>
+      <button class="btn-next" onclick="nextStep(1)">Next: Address <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- ── STEP 2: Address ── -->
+  <div class="form-card" id="step-2" style="display:none;">
+    <div class="form-card-header">
+      <div>
+        <h3><i class="fa-solid fa-location-dot" style="color:var(--accent);font-size:1.1rem;"></i> Address Details</h3>
+        <p>Enter your current residential address. Must match your Aadhaar card.</p>
+      </div>
+      <div class="autosave-badge"><div class="autosave-dot"></div> <span id="save-label-2">Auto-saving</span></div>
+    </div>
+
+    <div class="form-section-title"><i class="fa-solid fa-house"></i> Current Address</div>
+    <div class="form-group">
+      <label>House No. / Flat / Apartment <span class="required">*</span></label>
+      <input type="text" id="f-house" placeholder="e.g. 45B, Green Park Apartments" oninput="autoSave()">
+      <div class="error-msg" id="err-house"><i class="fa-solid fa-circle-exclamation"></i> Please enter house / flat number</div>
+    </div>
+    <div class="form-row-2">
+      <div class="form-group">
+        <label>Street / Colony <span class="required">*</span></label>
+        <input type="text" id="f-street" placeholder="e.g. MG Road, Sector 15" oninput="autoSave()">
+        <div class="error-msg" id="err-street"><i class="fa-solid fa-circle-exclamation"></i> Please enter street / colony</div>
+      </div>
+      <div class="form-group">
+        <label>Landmark</label>
+        <input type="text" id="f-landmark" placeholder="e.g. Near metro station" oninput="autoSave()">
+      </div>
+    </div>
+    <div class="form-row-3">
+      <div class="form-group">
+        <label>City / Town <span class="required">*</span></label>
+        <input type="text" id="f-city" placeholder="e.g. Faridabad" oninput="autoSave()">
+        <div class="error-msg" id="err-city"><i class="fa-solid fa-circle-exclamation"></i> Please enter city</div>
+      </div>
+      <div class="form-group">
+        <label>State <span class="required">*</span></label>
+        <select id="f-state" onchange="autoSave()">
+          <option value="">— Select State —</option>
+          <option>Andhra Pradesh</option><option>Delhi</option><option>Gujarat</option>
+          <option>Haryana</option><option>Karnataka</option><option>Kerala</option>
+          <option>Madhya Pradesh</option><option>Maharashtra</option><option>Punjab</option>
+          <option>Rajasthan</option><option>Tamil Nadu</option><option>Telangana</option>
+          <option>Uttar Pradesh</option><option>West Bengal</option>
+        </select>
+        <div class="error-msg" id="err-state"><i class="fa-solid fa-circle-exclamation"></i> Please select state</div>
+      </div>
+      <div class="form-group">
+        <label>PIN Code <span class="required">*</span></label>
+        <input type="text" id="f-pin" placeholder="6-digit PIN" maxlength="6" oninput="autoSave()">
+        <div class="error-msg" id="err-pin"><i class="fa-solid fa-circle-exclamation"></i> Please enter a valid 6-digit PIN code</div>
+      </div>
+    </div>
+
+    <div class="checkbox-row" style="margin-bottom:20px;">
+      <input type="checkbox" id="same-address" onchange="toggleSameAddress()">
+      <label for="same-address">My permanent address is the same as current address</label>
+    </div>
+
+    <div id="perm-address-section">
+      <div class="form-section-title"><i class="fa-solid fa-map-pin"></i> Permanent Address</div>
+      <div class="form-group">
+        <label>House No. / Flat / Apartment <span class="required">*</span></label>
+        <input type="text" id="f-phouse" placeholder="e.g. 12A, Old Colony" oninput="autoSave()">
+        <div class="error-msg" id="err-phouse"><i class="fa-solid fa-circle-exclamation"></i> Please enter permanent address</div>
+      </div>
+      <div class="form-row-3">
+        <div class="form-group">
+          <label>City <span class="required">*</span></label>
+          <input type="text" id="f-pcity" placeholder="City" oninput="autoSave()">
+          <div class="error-msg" id="err-pcity"><i class="fa-solid fa-circle-exclamation"></i> Please enter city</div>
+        </div>
+        <div class="form-group">
+          <label>State <span class="required">*</span></label>
+          <select id="f-pstate" onchange="autoSave()">
+            <option value="">— Select State —</option>
+            <option>Andhra Pradesh</option><option>Delhi</option><option>Gujarat</option>
+            <option>Haryana</option><option>Karnataka</option><option>Kerala</option>
+            <option>Madhya Pradesh</option><option>Maharashtra</option><option>Punjab</option>
+            <option>Rajasthan</option><option>Tamil Nadu</option><option>Telangana</option>
+            <option>Uttar Pradesh</option><option>West Bengal</option>
+          </select>
+          <div class="error-msg" id="err-pstate"><i class="fa-solid fa-circle-exclamation"></i> Please select state</div>
+        </div>
+        <div class="form-group">
+          <label>PIN Code <span class="required">*</span></label>
+          <input type="text" id="f-ppin" placeholder="6-digit PIN" maxlength="6" oninput="autoSave()">
+          <div class="error-msg" id="err-ppin"><i class="fa-solid fa-circle-exclamation"></i> Please enter PIN code</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-back" onclick="prevStep(2)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+      <button class="btn-next" onclick="nextStep(2)">Next: Documents <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- ── STEP 3: Documents ── -->
+  <div class="form-card" id="step-3" style="display:none;">
+    <div class="form-card-header">
+      <div>
+        <h3><i class="fa-solid fa-file-arrow-up" style="color:var(--accent);font-size:1.1rem;"></i> Document Upload</h3>
+        <p>Upload clear scanned copies or photos. Files must be JPG, PNG or PDF — max 2MB each.</p>
+      </div>
+      <div class="autosave-badge"><div class="autosave-dot"></div> <span id="doc-count">0 of 4 uploaded</span></div>
+    </div>
+
+    <div class="doc-checklist">
+      <h5><i class="fa-solid fa-triangle-exclamation"></i> Before You Upload — Make Sure:</h5>
+      <ul>
+        <li>Documents are clear, complete, and unexpired</li>
+        <li>Aadhaar shows your current address</li>
+        <li>Passport photo: white background, taken within 6 months, 35×45mm</li>
+        <li>File size: max 2MB per document</li>
+      </ul>
+    </div>
+
+    <div class="upload-grid">
+      <div class="upload-box" id="ub-aadhaar" onclick="fakeUpload('aadhaar')">
+        <div class="upload-tick"><i class="fa-solid fa-check"></i></div>
+        <div class="u-icon"><i class="fa-solid fa-id-card"></i></div>
+        <h5>Aadhaar Card</h5>
+        <p>Front and back scan (required)</p>
+        <button class="btn-upload" id="ubtn-aadhaar"><i class="fa-solid fa-cloud-arrow-up"></i> Choose File</button>
+      </div>
+      <div class="upload-box" id="ub-birth" onclick="fakeUpload('birth')">
+        <div class="upload-tick"><i class="fa-solid fa-check"></i></div>
+        <div class="u-icon"><i class="fa-solid fa-certificate"></i></div>
+        <h5>Birth Certificate</h5>
+        <p>Or Class 10 certificate as age proof</p>
+        <button class="btn-upload" id="ubtn-birth"><i class="fa-solid fa-cloud-arrow-up"></i> Choose File</button>
+      </div>
+      <div class="upload-box" id="ub-pan" onclick="fakeUpload('pan')">
+        <div class="upload-tick"><i class="fa-solid fa-check"></i></div>
+        <div class="u-icon"><i class="fa-solid fa-credit-card"></i></div>
+        <h5>PAN Card</h5>
+        <p>For identity verification</p>
+        <button class="btn-upload" id="ubtn-pan"><i class="fa-solid fa-cloud-arrow-up"></i> Choose File</button>
+      </div>
+      <div class="upload-box" id="ub-photo" onclick="fakeUpload('photo')">
+        <div class="upload-tick"><i class="fa-solid fa-check"></i></div>
+        <div class="u-icon"><i class="fa-solid fa-camera"></i></div>
+        <h5>Passport Size Photo</h5>
+        <p>35×45mm, white background, recent</p>
+        <button class="btn-upload" id="ubtn-photo"><i class="fa-solid fa-cloud-arrow-up"></i> Choose File</button>
+      </div>
+    </div>
+
+    <div class="form-nav" style="margin-top:32px;">
+      <button class="btn-back" onclick="prevStep(3)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+      <button class="btn-next" onclick="nextStep(3)">Next: Appointment <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- ── STEP 4: Appointment ── -->
+  <div class="form-card" id="step-4" style="display:none;">
+    <div class="form-card-header">
+      <div>
+        <h3><i class="fa-solid fa-calendar-check" style="color:var(--accent);font-size:1.1rem;"></i> Book Appointment</h3>
+        <p>Choose your Passport Seva Kendra, date and time slot.</p>
+      </div>
+      <div class="autosave-badge"><div class="autosave-dot"></div> <span id="save-label-4">Select a slot</span></div>
+    </div>
+
+    <div class="form-row-2" style="margin-bottom:28px;">
+      <div class="form-group">
+        <label>City <span class="required">*</span></label>
+        <select id="f-appt-city" onchange="autoSave()">
+          <option value="">— Select City —</option>
+          <option>Faridabad</option><option>New Delhi</option><option>Gurugram</option>
+          <option>Mumbai</option><option>Bengaluru</option><option>Chennai</option>
+          <option>Hyderabad</option><option>Kolkata</option><option>Pune</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Passport Seva Kendra (PSK) <span class="required">*</span></label>
+        <select id="f-appt-psk" onchange="autoSave()">
+          <option value="">— Select PSK —</option>
+          <option>PSK Faridabad – Sector 28</option>
+          <option>PSK New Delhi – Connaught Place</option>
+          <option>PSK Gurugram – Sector 14</option>
+          <option>PSK Mumbai – Andheri</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="appt-grid">
+      <div>
+        <div class="calendar-wrap">
+          <div class="cal-header">
+            <button class="cal-nav-btn" onclick="prevMonth()"><i class="fa-solid fa-chevron-left"></i></button>
+            <h5 id="cal-month-label">April 2026</h5>
+            <button class="cal-nav-btn" onclick="nextMonth()"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+          <div class="cal-grid" id="cal-grid">
+            <!-- Days rendered by JS -->
+          </div>
+        </div>
+
+        <div style="margin-top:20px;">
+          <div class="slot-wrap">
+            <h5 id="slot-title">Select a date first</h5>
+            <div class="slot-grid" id="slot-grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="appt-summary">
+          <h5><i class="fa-solid fa-clipboard-list" style="color:var(--accent)"></i> Booking Summary</h5>
+          <div class="summary-row"><span class="sk">Applicant</span><span class="sv" id="sum-name">—</span></div>
+          <div class="summary-row"><span class="sk">Service Type</span><span class="sv" id="sum-type">—</span></div>
+          <div class="summary-row"><span class="sk">PSK</span><span class="sv" id="sum-psk">—</span></div>
+          <div class="summary-row"><span class="sk">Date</span><span class="sv" id="sum-date">—</span></div>
+          <div class="summary-row"><span class="sk">Time</span><span class="sv" id="sum-time">—</span></div>
+          <div class="summary-row"><span class="sk">Fee</span><span class="sv" id="sum-fee">—</span></div>
+        </div>
+        <div style="background:rgba(42,122,75,0.06);border:1.5px solid rgba(42,122,75,0.18);border-radius:12px;padding:16px 18px;margin-top:16px;font-size:0.85rem;color:#1a5c2e;line-height:1.65;">
+          <strong><i class="fa-solid fa-circle-info"></i> Reminder:</strong> Carry original documents + one photocopy. Report 15 minutes early to PSK.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-nav" style="margin-top:28px;">
+      <button class="btn-back" onclick="prevStep(4)"><i class="fa-solid fa-arrow-left"></i> Back</button>
+      <button class="btn-next" onclick="nextStep(4)">Next: Review &amp; Submit <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+
+  <!-- ── STEP 5: Review & Submit ── -->
+  <div class="form-card" id="step-5" style="display:none;">
+    <div class="form-card-header">
+      <div>
+        <h3><i class="fa-solid fa-clipboard-check" style="color:var(--accent);font-size:1.1rem;"></i> Review &amp; Submit</h3>
+        <p>Please check all details before submitting. You can go back and edit anything.</p>
+      </div>
+      <div class="autosave-badge"><i class="fa-solid fa-shield-halved"></i> Ready to submit</div>
+    </div>
+
+    <!-- Review sections populated by JS -->
+    <div id="review-personal" class="review-section">
+      <h5><i class="fa-solid fa-user"></i> Personal Information</h5>
+      <div id="review-personal-fields"></div>
+    </div>
+    <div id="review-address" class="review-section">
+      <h5><i class="fa-solid fa-location-dot"></i> Address Details</h5>
+      <div id="review-address-fields"></div>
+    </div>
+    <div id="review-docs" class="review-section">
+      <h5><i class="fa-solid fa-file-arrow-up"></i> Documents</h5>
+      <div id="review-docs-fields"></div>
+    </div>
+    <div id="review-appt" class="review-section">
+      <h5><i class="fa-solid fa-calendar-check"></i> Appointment</h5>
+      <div id="review-appt-fields"></div>
+    </div>
+
+    <div class="declaration-box">
+      I hereby declare that the information furnished above is true and correct to the best of my knowledge and belief. I understand that furnishing false information is an offence under the Passports Act, 1967 and I am liable to be prosecuted and/or have my passport impounded.
+      <div class="checkbox-row">
+        <input type="checkbox" id="declare-check">
+        <label for="declare-check">I confirm the above declaration and agree to the terms <span class="required">*</span></label>
+      </div>
+    </div>
+
+    <div class="form-nav">
+      <button class="btn-back" onclick="prevStep(5)"><i class="fa-solid fa-arrow-left"></i> Back &amp; Edit</button>
+      <button class="btn-submit-final" onclick="submitApplication()">
+        <i class="fa-solid fa-paper-plane"></i> Submit Application
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     CONFIRMATION
+═══════════════════════════════ -->
+<div id="step-confirm" style="display:none;background:var(--paper);padding:48px 0 80px;">
+  <div class="confirm-section">
+    <div class="confirm-card">
+      <div class="confirm-top">
+        <div class="success-ring"><i class="fa-solid fa-check"></i></div>
+        <h2>Application Submitted!</h2>
+        <p>Your passport application has been received successfully. A confirmation has been sent to your email.</p>
+      </div>
+
+      <div class="app-id-box">
+        <label>Your Application ID — Save This</label>
+        <div class="app-id" id="conf-app-id">PP-2026-XXXX</div>
+        <div style="font-size:0.75rem;color:var(--ink-soft);margin-top:6px;">Use this ID to track your application anytime</div>
+      </div>
+
+      <div class="confirm-details">
+        <div class="confirm-detail">
+          <div class="cd-icon"><i class="fa-solid fa-user"></i></div>
+          <div class="cd-info"><h6>Applicant Name</h6><p id="conf-name">—</p></div>
+        </div>
+        <div class="confirm-detail">
+          <div class="cd-icon"><i class="fa-solid fa-passport"></i></div>
+          <div class="cd-info"><h6>Service Type</h6><p id="conf-service">—</p></div>
+        </div>
+        <div class="confirm-detail">
+          <div class="cd-icon"><i class="fa-solid fa-calendar-check"></i></div>
+          <div class="cd-info"><h6>Appointment</h6><p id="conf-appt">—</p></div>
+        </div>
+        <div class="confirm-detail">
+          <div class="cd-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div class="cd-info"><h6>PSK Location</h6><p id="conf-psk">—</p></div>
+        </div>
+        <div class="confirm-detail">
+          <div class="cd-icon"><i class="fa-solid fa-clock"></i></div>
+          <div class="cd-info"><h6>Expected Processing</h6><p id="conf-processing">15 working days after appointment</p></div>
+        </div>
+      </div>
+
+      <div class="confirm-actions">
+        <button class="btn-download" onclick="downloadPDF()">Download PDF Receipt</button>
+        <a class="btn-track" href="track.html">Track My Application</a>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;min-width:260px;">
+      <div style="background:var(--white);border:1.5px solid var(--rule);border-radius:16px;padding:24px;">
+        <h5 style="font-family:'Lora',serif;font-size:1rem;font-weight:700;margin-bottom:14px;color:var(--ink);">What Happens Next?</h5>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;gap:10px;font-size:0.875rem;color:var(--ink-mid);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;">1.</span> Visit PSK on your appointment date with original documents
+          </div>
+          <div style="display:flex;gap:10px;font-size:0.875rem;color:var(--ink-mid);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;">2.</span> Police verification will happen at your home
+          </div>
+          <div style="display:flex;gap:10px;font-size:0.875rem;color:var(--ink-mid);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;">3.</span> Passport is printed and dispatched to your address
+          </div>
+          <div style="display:flex;gap:10px;font-size:0.875rem;color:var(--ink-mid);">
+            <span style="color:var(--green);font-weight:700;flex-shrink:0;">4.</span> Track status anytime using your Application ID
+          </div>
+        </div>
+      </div>
+      <div style="background:#EEF3FB;border:1.5px solid #C7D9F3;border-radius:16px;padding:20px;font-size:0.875rem;color:var(--accent);">
+        <strong><i class="fa-solid fa-phone"></i> Need help?</strong><br>
+        <span style="color:var(--ink-soft);">Call us free at 1800-258-1800<br>Mon–Sat, 9 AM – 7 PM</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════ STATE ════════════════
+let selectedService = null;
+let currentStep = 1;
+let uploadedDocs = { aadhaar: false, birth: false, pan: false, photo: false };
+let selectedDate = null;
+let selectedSlot = null;
+let calMonth = 3; // April (0-indexed)
+let calYear = 2026;
+
+const serviceLabels = {
+  fresh: 'Fresh Passport (First Time)',
+  renewal: 'Passport Renewal',
+  tatkaal: 'Tatkaal / Urgent (7 days)',
+  child: 'Child Passport'
+};
+const serviceFees = {
+  fresh: '₹1,500',
+  renewal: '₹1,500',
+  tatkaal: '₹3,500',
+  child: '₹1,000'
+};
+const serviceProcess = {
+  fresh: '15 working days',
+  renewal: '12 working days',
+  tatkaal: '7 working days',
+  child: '15 working days'
+};
+
+// ════════════════ SERVICE PICKER ════════════════
+function selectService(type) {
+  selectedService = type;
+  document.querySelectorAll('.picker-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('pick-' + type).classList.add('selected');
+  const btn = document.getElementById('btn-start');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  btn.style.cursor = 'pointer';
+  autoSave();
+}
+
+function startForm() {
+  if (!selectedService) return;
+  document.getElementById('step-picker').style.display = 'none';
+  document.getElementById('form-wrapper').style.display = 'block';
+  updateSummary();
+  renderCalendar();
+  loadFromStorage();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goToPicker() {
+  document.getElementById('step-picker').style.display = 'block';
+  document.getElementById('form-wrapper').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ════════════════ STEP NAVIGATION ════════════════
+function nextStep(from) {
+  if (!validateStep(from)) return;
+  showStep(from + 1);
+  if (from + 1 === 5) buildReview();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function prevStep(from) {
+  showStep(from - 1);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showStep(n) {
+  currentStep = n;
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('step-' + i);
+    if (el) el.style.display = i === n ? 'block' : 'none';
+    const sc = document.getElementById('sc-' + i);
+    const sl = document.getElementById('sl-' + i);
+    if (sc && sl) {
+      sc.className = 'stepper-circle' + (i < n ? ' done' : i === n ? ' active' : '');
+      sc.innerHTML = i < n ? '<i class="fa-solid fa-check"></i>' : i;
+      sl.className = 'stepper-label' + (i < n ? ' done' : i === n ? ' active' : '');
+    }
+    const line = document.getElementById('sline-' + i);
+    if (line) line.className = 'stepper-line' + (i < n ? ' done' : '');
+  }
+}
+
+// ════════════════ VALIDATION ════════════════
+function validateStep(step) {
+  let ok = true;
+  const rules = {
+    1: [
+      ['f-firstname','err-firstname', v => v.trim().length > 0],
+      ['f-lastname','err-lastname', v => v.trim().length > 0],
+      ['f-dob','err-dob', v => v !== ''],
+      ['f-gender','err-gender', v => v !== ''],
+      ['f-marital','err-marital', v => v !== ''],
+      ['f-mobile','err-mobile', v => /^\d{10}$/.test(v)],
+      ['f-email','err-email', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)],
+      ['f-father','err-father', v => v.trim().length > 0],
+      ['f-mother','err-mother', v => v.trim().length > 0],
+    ],
+    2: [
+      ['f-house','err-house', v => v.trim().length > 0],
+      ['f-street','err-street', v => v.trim().length > 0],
+      ['f-city','err-city', v => v.trim().length > 0],
+      ['f-state','err-state', v => v !== ''],
+      ['f-pin','err-pin', v => /^\d{6}$/.test(v)],
+    ],
+  };
+  if (step === 2 && !document.getElementById('same-address').checked) {
+    rules[2].push(
+      ['f-phouse','err-phouse', v => v.trim().length > 0],
+      ['f-pcity','err-pcity', v => v.trim().length > 0],
+      ['f-pstate','err-pstate', v => v !== ''],
+      ['f-ppin','err-ppin', v => /^\d{6}$/.test(v)],
+    );
+  }
+  if (rules[step]) {
+    rules[step].forEach(([fieldId, errId, validator]) => {
+      const el = document.getElementById(fieldId);
+      const err = document.getElementById(errId);
+      if (!validator(el.value)) {
+        el.classList.add('input-error');
+        err.classList.add('show');
+        ok = false;
+      } else {
+        el.classList.remove('input-error');
+        err.classList.remove('show');
+      }
+    });
+  }
+  if (step === 3) {
+    const missing = Object.values(uploadedDocs).filter(v => !v).length;
+    if (missing > 0) {
+      if (!confirm(`You have ${missing} document(s) not yet uploaded. Continue anyway?`)) return false;
+    }
+  }
+  if (step === 4) {
+    if (!selectedDate || !selectedSlot) {
+      alert('Please select an appointment date and time slot before continuing.');
+      return false;
+    }
+    if (!document.getElementById('f-appt-city').value || !document.getElementById('f-appt-psk').value) {
+      alert('Please select a city and Passport Seva Kendra.');
+      return false;
+    }
+  }
+  return ok;
+}
+
+// ════════════════ AUTOSAVE ════════════════
+let saveTimer = null;
+function autoSave() {
+  clearTimeout(saveTimer);
+  ['save-label-1','save-label-2','save-label-4'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = 'Saving...';
+  });
+  saveTimer = setTimeout(() => {
+    const data = {
+      service: selectedService,
+      firstname: val('f-firstname'), lastname: val('f-lastname'),
+      dob: val('f-dob'), gender: val('f-gender'), marital: val('f-marital'),
+      mobile: val('f-mobile'), email: val('f-email'),
+      father: val('f-father'), mother: val('f-mother'),
+      house: val('f-house'), street: val('f-street'), landmark: val('f-landmark'),
+      city: val('f-city'), state: val('f-state'), pin: val('f-pin'),
+      phouse: val('f-phouse'), pcity: val('f-pcity'), pstate: val('f-pstate'), ppin: val('f-ppin'),
+      sameAddress: document.getElementById('same-address')?.checked,
+      apptCity: val('f-appt-city'), apptPsk: val('f-appt-psk'),
+      selectedDate, selectedSlot,
+      uploadedDocs,
+    };
+    localStorage.setItem('pp_draft', JSON.stringify(data));
+    const now = new Date();
+    const t = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+    ['save-label-1','save-label-2','save-label-4'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = `Saved at ${t}`;
+    });
+  }, 800);
+}
+
+function val(id) {
+  const el = document.getElementById(id);
+  return el ? el.value : '';
+}
+
+function loadFromStorage() {
+  const raw = localStorage.getItem('pp_draft');
+  if (!raw) return;
+  try {
+    const d = JSON.parse(raw);
+    const fields = ['firstname','lastname','dob','gender','marital','mobile','email','father','mother',
+      'house','street','landmark','city','state','pin','phouse','pcity','pstate','ppin','appt-city','appt-psk'];
+    fields.forEach(f => {
+      const el = document.getElementById('f-' + f);
+      if (el && d[f.replace('-','')]) el.value = d[f.replace('-','')];
+    });
+    // fix mismatched keys
+    if (d.apptCity && document.getElementById('f-appt-city')) document.getElementById('f-appt-city').value = d.apptCity;
+    if (d.apptPsk && document.getElementById('f-appt-psk')) document.getElementById('f-appt-psk').value = d.apptPsk;
+    if (d.sameAddress) {
+      document.getElementById('same-address').checked = true;
+      toggleSameAddress();
+    }
+    if (d.uploadedDocs) {
+      uploadedDocs = d.uploadedDocs;
+      Object.keys(uploadedDocs).forEach(k => { if (uploadedDocs[k]) markUploaded(k); });
+      updateDocCount();
+    }
+    if (d.selectedDate) { selectedDate = d.selectedDate; }
+    if (d.selectedSlot) { selectedSlot = d.selectedSlot; }
+    if (d.service && d.service !== selectedService) {
+      selectedService = d.service;
+      const pc = document.getElementById('pick-' + selectedService);
+      if (pc) pc.classList.add('selected');
+    }
+  } catch(e) {}
+}
+
+// ════════════════ SAME ADDRESS ════════════════
+function toggleSameAddress() {
+  const checked = document.getElementById('same-address').checked;
+  document.getElementById('perm-address-section').style.display = checked ? 'none' : 'block';
+  autoSave();
+}
+
+// ════════════════ DOCUMENT UPLOAD ════════════════
+function fakeUpload(docKey) {
+  if (uploadedDocs[docKey]) return;
+  setTimeout(() => {
+    uploadedDocs[docKey] = true;
+    markUploaded(docKey);
+    updateDocCount();
+    autoSave();
+  }, 500);
+}
+
+function markUploaded(docKey) {
+  const box = document.getElementById('ub-' + docKey);
+  const btn = document.getElementById('ubtn-' + docKey);
+  if (!box) return;
+  box.classList.add('uploaded');
+  if (btn) btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Uploaded';
+  const icon = box.querySelector('.u-icon i');
+  if (icon) { icon.className = 'fa-solid fa-circle-check'; box.querySelector('.u-icon').style.color = 'var(--green)'; }
+}
+
+function updateDocCount() {
+  const count = Object.values(uploadedDocs).filter(Boolean).length;
+  const el = document.getElementById('doc-count');
+  if (el) el.textContent = `${count} of 4 uploaded`;
+}
+
+// ════════════════ CALENDAR ════════════════
+const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const slots = ['9:00 AM','9:30 AM','10:00 AM','10:30 AM','11:00 AM','11:30 AM','2:00 PM','2:30 PM','3:00 PM','3:30 PM'];
+const fullSlots = ['9:00 AM','11:00 AM','3:30 PM'];
+
+function renderCalendar() {
+  document.getElementById('cal-month-label').textContent = `${months[calMonth]} ${calYear}`;
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d => {
+    const lbl = document.createElement('div');
+    lbl.className = 'cal-day-label'; lbl.textContent = d;
+    grid.appendChild(lbl);
+  });
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const today = new Date();
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement('button');
+    empty.className = 'cal-day empty'; grid.appendChild(empty);
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const btn = document.createElement('button');
+    btn.textContent = d;
+    const dayDate = new Date(calYear, calMonth, d);
+    const dayOfWeek = dayDate.getDay();
+    if (dayOfWeek === 0 || dayDate < today) {
+      btn.className = 'cal-day disabled';
+    } else {
+      btn.className = 'cal-day available';
+      if (selectedDate === `${d} ${months[calMonth]} ${calYear}`) btn.classList.add('selected');
+      btn.onclick = () => selectDate(d, btn);
+    }
+    grid.appendChild(btn);
+  }
+}
+
+function prevMonth() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } renderCalendar(); }
+function nextMonth() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } renderCalendar(); }
+
+function selectDate(d, btn) {
+  document.querySelectorAll('.cal-day.selected').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedDate = `${d} ${months[calMonth]} ${calYear}`;
+  selectedSlot = null;
+  renderSlots();
+  updateSummary();
+  autoSave();
+}
+
+function renderSlots() {
+  const grid = document.getElementById('slot-grid');
+  const title = document.getElementById('slot-title');
+  title.textContent = `Available Slots – ${selectedDate}`;
+  grid.innerHTML = '';
+  slots.forEach(s => {
+    const btn = document.createElement('button');
+    btn.textContent = s;
+    if (fullSlots.includes(s)) {
+      btn.className = 'slot full';
+    } else {
+      btn.className = 'slot' + (selectedSlot === s ? ' selected' : '');
+      btn.onclick = () => selectSlot(s);
+    }
+    grid.appendChild(btn);
+  });
+}
+
+function selectSlot(s) {
+  selectedSlot = s;
+  document.getElementById('save-label-4').textContent = `${selectedDate}, ${s}`;
+  renderSlots();
+  updateSummary();
+  autoSave();
+}
+
+function updateSummary() {
+  const first = val('f-firstname'); const last = val('f-lastname');
+  const name = (first + ' ' + last).trim() || '—';
+  document.getElementById('sum-name').textContent = name;
+  document.getElementById('sum-type').textContent = selectedService ? serviceLabels[selectedService] : '—';
+  document.getElementById('sum-psk').textContent = val('f-appt-psk') || '—';
+  document.getElementById('sum-date').textContent = selectedDate || '—';
+  document.getElementById('sum-time').textContent = selectedSlot || '—';
+  document.getElementById('sum-fee').textContent = selectedService ? serviceFees[selectedService] : '—';
+}
+
+// ════════════════ REVIEW BUILD ════════════════
+function buildReview() {
+  updateSummary();
+  const pf = document.getElementById('review-personal-fields');
+  pf.innerHTML = rf('Name', `${val('f-firstname')} ${val('f-lastname')}`)
+    + rf('Date of Birth', val('f-dob'))
+    + rf('Gender', val('f-gender'))
+    + rf('Marital Status', val('f-marital'))
+    + rf('Mobile', val('f-mobile'))
+    + rf('Email', val('f-email'))
+    + rf("Father's Name", val('f-father'))
+    + rf("Mother's Name", val('f-mother'));
+
+  const af = document.getElementById('review-address-fields');
+  const sameAddr = document.getElementById('same-address').checked;
+  af.innerHTML = rf('Current Address', `${val('f-house')}, ${val('f-street')}, ${val('f-city')}, ${val('f-state')} – ${val('f-pin')}`)
+    + rf('Permanent Address', sameAddr ? 'Same as current' : `${val('f-phouse')}, ${val('f-pcity')}, ${val('f-pstate')} – ${val('f-ppin')}`);
+
+  const df = document.getElementById('review-docs-fields');
+  df.innerHTML = ['aadhaar','birth','pan','photo'].map(k =>
+    rf({ aadhaar:'Aadhaar Card', birth:'Birth Certificate', pan:'PAN Card', photo:'Passport Photo' }[k],
+      uploadedDocs[k] ? '<span style="color:var(--green);font-weight:600;"><i class="fa-solid fa-check"></i> Uploaded</span>' : '<span style="color:var(--red);">Not uploaded</span>')
+  ).join('');
+
+  const apf = document.getElementById('review-appt-fields');
+  apf.innerHTML = rf('Service', serviceLabels[selectedService] || '—')
+    + rf('PSK', val('f-appt-psk') || '—')
+    + rf('Date', selectedDate || '—')
+    + rf('Time', selectedSlot || '—')
+    + rf('Fee', serviceFees[selectedService] || '—');
+}
+
+function rf(key, val) {
+  return `<div class="review-field"><span class="rf-key">${key}</span><span class="rf-val">${val}</span></div>`;
+}
+
+// ════════════════ SUBMIT ════════════════
+function submitApplication() {
+  if (!document.getElementById('declare-check').checked) {
+    alert('Please read and accept the declaration before submitting.');
+    return;
+  }
+  const appId = 'PP-' + calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + Math.floor(Math.random()*9000+1000);
+  const appData = {
+    appId,
+    service: serviceLabels[selectedService],
+    name: `${val('f-firstname')} ${val('f-lastname')}`,
+    mobile: val('f-mobile'),
+    email: val('f-email'),
+    psk: val('f-appt-psk'),
+    date: selectedDate,
+    time: selectedSlot,
+    fee: serviceFees[selectedService],
+    processing: serviceProcess[selectedService],
+    status: 'submitted',
+    submittedOn: new Date().toLocaleDateString('en-IN'),
+    timeline: [
+      { label: 'Application Submitted', done: true, date: new Date().toLocaleDateString('en-IN') },
+      { label: 'Documents Verified', done: false, date: '' },
+      { label: 'Appointment Completed', done: false, date: '' },
+      { label: 'Police Verification', done: false, date: '' },
+      { label: 'Passport Printing', done: false, date: '' },
+      { label: 'Dispatched', done: false, date: '' },
+    ]
+  };
+  localStorage.setItem('pp_application_' + appId, JSON.stringify(appData));
+  localStorage.setItem('pp_last_app_id', appId);
+  localStorage.removeItem('pp_draft');
+
+  // Show confirmation
+  document.getElementById('form-wrapper').style.display = 'none';
+  document.getElementById('step-confirm').style.display = 'block';
+  document.getElementById('conf-app-id').textContent = appId;
+  document.getElementById('conf-name').textContent = appData.name;
+  document.getElementById('conf-service').textContent = appData.service;
+  document.getElementById('conf-appt').textContent = `${appData.date} at ${appData.time}`;
+  document.getElementById('conf-psk').textContent = appData.psk;
+  document.getElementById('conf-processing').textContent = appData.processing;
+  window.currentAppData = appData;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ════════════════ PDF DOWNLOAD ════════════════
+function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const d = window.currentAppData;
+  const pageW = 210;
+  const margin = 20;
+
+  // Header bar
+  doc.setFillColor(43, 95, 164);
+  doc.rect(0, 0, pageW, 38, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.text('PassportIndia', margin, 18);
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Official Passport Application Receipt', margin, 26);
+  doc.text('passportindia.in', pageW - margin, 18, { align: 'right' });
+
+  // App ID box
+  doc.setFillColor(238, 243, 251);
+  doc.roundedRect(margin, 46, pageW - margin*2, 20, 4, 4, 'F');
+  doc.setTextColor(43, 95, 164);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('Application ID:', margin + 8, 55);
+  doc.setFontSize(14);
+  doc.text(d.appId, margin + 8, 62);
+  doc.setTextColor(100, 100, 100);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.text(`Submitted on: ${d.submittedOn}`, pageW - margin - 8, 62, { align: 'right' });
+
+  // Section helper
+  let y = 80;
+  function section(title) {
+    doc.setFillColor(43, 95, 164);
+    doc.rect(margin, y, pageW - margin*2, 8, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.text(title.toUpperCase(), margin + 4, y + 5.5);
+    y += 12;
+  }
+  function row(key, value) {
+    doc.setTextColor(100, 100, 100);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.text(key, margin + 4, y);
+    doc.setTextColor(28, 28, 28);
+    doc.setFont('helvetica', 'bold');
+    doc.text(String(value || '—'), margin + 55, y);
+    doc.setDrawColor(232, 228, 220);
+    doc.line(margin, y + 2.5, pageW - margin, y + 2.5);
+    y += 9;
+  }
+
+  section('Applicant Information');
+  row('Full Name', d.name);
+  row('Mobile', d.mobile);
+  row('Email', d.email);
+
+  y += 4;
+  section('Service Details');
+  row('Service Type', d.service);
+  row('Application Fee', d.fee);
+  row('Expected Processing', d.processing);
+
+  y += 4;
+  section('Appointment Details');
+  row('PSK Location', d.psk);
+  row('Date', d.date);
+  row('Time Slot', d.time);
+
+  y += 4;
+  section('Documents Checklist');
+  row('Aadhaar Card', uploadedDocs.aadhaar ? '✓ Uploaded' : '✗ Missing');
+  row('Birth Certificate', uploadedDocs.birth ? '✓ Uploaded' : '✗ Missing');
+  row('PAN Card', uploadedDocs.pan ? '✓ Uploaded' : '✗ Missing');
+  row('Passport Size Photo', uploadedDocs.photo ? '✓ Uploaded' : '✗ Missing');
+
+  y += 8;
+  // Reminder box
+  doc.setFillColor(255, 249, 235);
+  doc.roundedRect(margin, y, pageW - margin*2, 30, 4, 4, 'F');
+  doc.setTextColor(122, 90, 16);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.text('IMPORTANT REMINDER', margin + 6, y + 8);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8.5);
+  doc.setTextColor(60, 60, 60);
+  doc.text('• Carry originals + 1 photocopy of all documents to PSK', margin + 6, y + 16);
+  doc.text('• Report 15 minutes before your appointment time', margin + 6, y + 22);
+  doc.text('• Track status at passportindia.in using your Application ID', margin + 6, y + 28);
+
+  // Footer
+  doc.setFillColor(20, 20, 20);
+  doc.rect(0, 285, pageW, 12, 'F');
+  doc.setTextColor(150, 150, 150);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7.5);
+  doc.text('© 2026 PassportIndia · Assessment Demo Project · helpline: 1800-258-1800', pageW/2, 292, { align: 'center' });
+
+  doc.save(`PassportIndia_Receipt_${d.appId}.pdf`);
+}
+
+// ════════════════ INIT ════════════════
+// Check for saved draft service
+window.addEventListener('load', () => {
+  const raw = localStorage.getItem('pp_draft');
+  if (raw) {
+    try {
+      const d = JSON.parse(raw);
+      if (d.service) { selectService(d.service); }
+    } catch(e) {}
+  }
+  renderCalendar();
+  // Update summary on appointment fields change
+  document.getElementById('f-appt-city')?.addEventListener('change', updateSummary);
+  document.getElementById('f-appt-psk')?.addEventListener('change', updateSummary);
+  document.getElementById('f-firstname')?.addEventListener('input', updateSummary);
+  document.getElementById('f-lastname')?.addEventListener('input', updateSummary);
+});
+</script>
+</body>
+</html>

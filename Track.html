@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Application – PassportIndia</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="track-page">
+
+<nav id="mainNav" class="scrolled">
+  <a class="logo" href="index.html">
+    <div class="logo-mark"><i class="fa-solid fa-passport"></i></div>
+    <span class="logo-text">Passport<span>India</span></span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a class="nav-link" href="track.html">Track Status</a>
+    <a class="nav-cta" href="apply.html">Apply Now</a>
+  </div>
+</nav>
+
+<!-- Hero search -->
+<div class="track-hero">
+  <div class="track-hero-inner">
+    <div class="section-eyebrow" style="justify-content:center;margin-bottom:12px;"><i class="fa-solid fa-radar"></i> Application Tracker</div>
+    <h2>Track Your Application</h2>
+    <p>Enter your Application ID to see the current status of your passport. Your ID looks like: <strong>PP-2026-04-1234</strong></p>
+    <div class="track-search-box">
+      <input type="text" id="track-input" placeholder="Enter Application ID — e.g. PP-2026-04-1234" oninput="this.value = this.value.toUpperCase()">
+      <button class="btn-track-search" onclick="doTrack()">Track
+      </button>
+    </div>
+    <div id="track-error" style="display:none;margin-top:12px;color:var(--red);font-size:0.875rem;display:flex;align-items:center;gap:6px;">
+      <i class="fa-solid fa-circle-exclamation"></i> <span id="track-error-msg">Application ID not found. Please check and try again.</span>
+    </div>
+
+    <!-- Quick load last application -->
+    <div id="quick-load" style="margin-top:18px;display:none;text-align:center;">
+      <button onclick="loadLastApp()" style="background:none;border:none;color:var(--accent);font-size:0.875rem;font-weight:600;cursor:pointer;font-family:'Source Sans 3',sans-serif;display:inline-flex;align-items:center;gap:6px;">
+        <i class="fa-solid fa-clock-rotate-left"></i> Load my last application
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Results -->
+<div class="track-content" id="track-results">
+
+  <!-- App card -->
+  <div class="track-app-card">
+    <div class="track-app-header">
+      <div>
+        <h3 id="tr-name">—</h3>
+        <p id="tr-service">—</p>
+        <p style="font-size:0.78rem;color:var(--ink-soft);margin-top:3px;" id="tr-appid">—</p>
+      </div>
+      <div><span class="status-badge status-submitted" id="tr-status-badge">Submitted</span></div>
+    </div>
+
+    <!-- Progress timeline -->
+    <h5 style="font-size:0.875rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:20px;">
+      <i class="fa-solid fa-timeline"></i> Application Progress
+    </h5>
+    <div class="timeline" id="tr-timeline"></div>
+  </div>
+
+  <!-- Info grid -->
+  <div class="track-app-card">
+    <h5 style="font-family:'Lora',serif;font-weight:700;margin-bottom:18px;font-size:1rem;">
+      <i class="fa-solid fa-circle-info" style="color:var(--accent)"></i> Application Details
+    </h5>
+    <div class="track-info-grid">
+      <div class="track-info-item">
+        <div class="ti-label">Applicant Name</div>
+        <div class="ti-val" id="ti-name">—</div>
+      </div>
+      <div class="track-info-item">
+        <div class="ti-label">Service Type</div>
+        <div class="ti-val" id="ti-service">—</div>
+      </div>
+      <div class="track-info-item">
+        <div class="ti-label">PSK Location</div>
+        <div class="ti-val" id="ti-psk">—</div>
+      </div>
+      <div class="track-info-item">
+        <div class="ti-label">Appointment Date</div>
+        <div class="ti-val" id="ti-date">—</div>
+      </div>
+      <div class="track-info-item">
+        <div class="ti-label">Appointment Time</div>
+        <div class="ti-val" id="ti-time">—</div>
+      </div>
+      <div class="track-info-item">
+        <div class="ti-label">Application Fee</div>
+        <div class="ti-val" id="ti-fee">—</div>
+      </div>
+      <div class="track-info-item">
+        <div class="ti-label">Submitted On</div>
+        <div class="ti-val" id="ti-submitted">—</div>
+      </div>
+      <div class="track-info-item">
+        <div class="ti-label">Expected Processing</div>
+        <div class="ti-val" id="ti-processing">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;">
+    <button class="btn-download" onclick="downloadTrackPDF()" style="flex:none;width:auto;">
+      <i class="fa-solid fa-file-pdf"></i> Download Receipt PDF
+    </button>
+    <a class="btn-track" href="apply.html" style="flex:none;width:auto;text-decoration:none;">
+      <i class="fa-solid fa-plus"></i> Start New Application
+    </a>
+    <button onclick="shareApp()" style="display:inline-flex;align-items:center;gap:8px;padding:13px 22px;background:var(--paper);border:1.5px solid var(--rule);border-radius:var(--r);font-size:0.9rem;font-weight:600;color:var(--ink);cursor:pointer;font-family:'Source Sans 3',sans-serif;">
+      <i class="fa-solid fa-share-nodes"></i> Share Application ID
+    </button>
+  </div>
+
+  <!-- Help note -->
+  <div style="background:var(--white);border:1.5px solid var(--rule);border-radius:16px;padding:24px;margin-top:24px;">
+    <h5 style="font-family:'Lora',serif;font-size:1rem;font-weight:700;margin-bottom:14px;color:var(--ink);">
+      <i class="fa-solid fa-question-circle" style="color:var(--accent)"></i> What Does Each Status Mean?
+    </h5>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="font-size:0.875rem;color:var(--ink-mid);display:flex;gap:8px;"><span style="color:var(--accent);font-weight:700;flex-shrink:0;">Submitted:</span> We have received your application and are verifying your documents.</div>
+      <div style="font-size:0.875rem;color:var(--ink-mid);display:flex;gap:8px;"><span style="color:var(--gold);font-weight:700;flex-shrink:0;">In Progress:</span> Your appointment is pending. Visit PSK on the booked date.</div>
+      <div style="font-size:0.875rem;color:var(--ink-mid);display:flex;gap:8px;"><span style="color:var(--green);font-weight:700;flex-shrink:0;">Printing:</span> Your passport is being printed. Delivery in 2–3 working days.</div>
+      <div style="font-size:0.875rem;color:var(--ink-mid);display:flex;gap:8px;"><span style="color:#1a5c2e;font-weight:700;flex-shrink:0;">Dispatched:</span> Your passport is on its way! Expect delivery in 1–2 days.</div>
+    </div>
+  </div>
+</div>
+
+<!-- No result -->
+<div class="track-content" id="track-no-result" style="display:none;">
+  <div class="no-result">
+    <div class="nr-icon"><i class="fa-solid fa-file-circle-question"></i></div>
+    <h4>Application Not Found</h4>
+    <p>We couldn't find an application with that ID. Please check the ID and try again, or <a href="#consultation" style="color:var(--accent);font-weight:600;">contact our support team</a>.</p>
+    <div style="margin-top:24px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="apply.html" class="btn-next" style="text-decoration:none;"><i class="fa-solid fa-file-pen"></i> Start New Application</a>
+    </div>
+  </div>
+</div>
+
+<!-- All saved apps section -->
+<div style="max-width:760px;margin:0 auto;padding:0 48px 64px;" id="saved-apps-section" style="display:none;">
+  <h4 style="font-family:'Lora',serif;font-size:1.1rem;font-weight:700;color:var(--ink);margin-bottom:16px;">
+    <i class="fa-solid fa-folder-open" style="color:var(--accent)"></i> Your Saved Applications
+  </h4>
+  <div id="saved-apps-list"></div>
+</div>
+
+<script>
+let currentApp = null;
+
+window.addEventListener('load', () => {
+  // Auto-fill last app ID if available
+  const lastId = localStorage.getItem('pp_last_app_id');
+  if (lastId) {
+    document.getElementById('track-input').value = lastId;
+    document.getElementById('quick-load').style.display = 'block';
+  }
+  loadSavedApps();
+  // Auto-track if ID in URL
+  const params = new URLSearchParams(window.location.search);
+  const urlId = params.get('id');
+  if (urlId) {
+    document.getElementById('track-input').value = urlId.toUpperCase();
+    doTrack();
+  }
+});
+
+function loadLastApp() {
+  const lastId = localStorage.getItem('pp_last_app_id');
+  if (lastId) {
+    document.getElementById('track-input').value = lastId;
+    doTrack();
+  }
+}
+
+function doTrack() {
+  const id = document.getElementById('track-input').value.trim().toUpperCase();
+  if (!id) {
+    showError('Please enter an Application ID.');
+    return;
+  }
+  const raw = localStorage.getItem('pp_application_' + id);
+  document.getElementById('track-results').style.display = 'none';
+  document.getElementById('track-no-result').style.display = 'none';
+  document.getElementById('track-error').style.display = 'none';
+
+  if (!raw) {
+    document.getElementById('track-no-result').style.display = 'block';
+    document.getElementById('track-no-result').classList.add('visible');
+    return;
+  }
+
+  try {
+    const d = JSON.parse(raw);
+    currentApp = d;
+    renderTrackResults(d);
+    document.getElementById('track-results').style.display = 'block';
+    document.getElementById('track-results').classList.add('visible');
+    setTimeout(() => {
+      document.getElementById('track-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  } catch(e) {
+    showError('Could not load application data. Please try again.');
+  }
+}
+
+function showError(msg) {
+  const el = document.getElementById('track-error');
+  document.getElementById('track-error-msg').textContent = msg;
+  el.style.display = 'flex';
+}
+
+function renderTrackResults(d) {
+  document.getElementById('tr-name').textContent = d.name;
+  document.getElementById('tr-service').textContent = d.service;
+  document.getElementById('tr-appid').textContent = 'Application ID: ' + d.appId;
+
+  // Status badge
+  const badge = document.getElementById('tr-status-badge');
+  badge.textContent = getStatusLabel(d.status);
+  badge.className = 'status-badge status-' + d.status;
+
+  // Info grid
+  document.getElementById('ti-name').textContent = d.name;
+  document.getElementById('ti-service').textContent = d.service;
+  document.getElementById('ti-psk').textContent = d.psk || '—';
+  document.getElementById('ti-date').textContent = d.date || '—';
+  document.getElementById('ti-time').textContent = d.time || '—';
+  document.getElementById('ti-fee').textContent = d.fee || '—';
+  document.getElementById('ti-submitted').textContent = d.submittedOn || '—';
+  document.getElementById('ti-processing').textContent = d.processing || '—';
+
+  // Timeline
+  const tl = document.getElementById('tr-timeline');
+  tl.innerHTML = '';
+  const activeIndex = d.timeline.findIndex(t => !t.done);
+  d.timeline.forEach((item, i) => {
+    const isDone = item.done;
+    const isActive = i === activeIndex;
+    const isLast = i === d.timeline.length - 1;
+
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'timeline-item';
+
+    const left = document.createElement('div');
+    left.className = 'timeline-left';
+
+    const dot = document.createElement('div');
+    dot.className = 'timeline-dot' + (isDone ? ' done' : isActive ? ' active' : '');
+    dot.innerHTML = isDone ? '<i class="fa-solid fa-check"></i>' : isActive ? '<i class="fa-solid fa-spinner fa-spin"></i>' : String(i + 1);
+    left.appendChild(dot);
+
+    if (!isLast) {
+      const line = document.createElement('div');
+      line.className = 'timeline-line' + (isDone ? ' done' : '');
+      left.appendChild(line);
+    }
+
+    const right = document.createElement('div');
+    right.className = 'timeline-right';
+    right.innerHTML = `
+      <h5 style="${isActive ? 'color:var(--accent)' : ''}">${item.label}</h5>
+      <p>${isDone ? 'Completed' : isActive ? 'In progress...' : 'Pending'}</p>
+      ${item.date ? `<div class="tl-date"><i class="fa-regular fa-calendar"></i> ${item.date}</div>` : ''}
+    `;
+
+    itemDiv.appendChild(left);
+    itemDiv.appendChild(right);
+    tl.appendChild(itemDiv);
+  });
+}
+
+function getStatusLabel(status) {
+  const map = {
+    submitted: 'Submitted',
+    processing: 'In Progress',
+    printing: 'Printing',
+    dispatched: 'Dispatched'
+  };
+  return map[status] || 'Submitted';
+}
+
+function loadSavedApps() {
+  const apps = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('pp_application_')) {
+      try {
+        const d = JSON.parse(localStorage.getItem(key));
+        apps.push(d);
+      } catch(e) {}
+    }
+  }
+  if (apps.length === 0) return;
+
+  const section = document.getElementById('saved-apps-section');
+  section.style.display = 'block';
+  const list = document.getElementById('saved-apps-list');
+  list.innerHTML = '';
+  apps.forEach(app => {
+    const card = document.createElement('div');
+    card.style.cssText = 'background:var(--white);border:1.5px solid var(--rule);border-radius:14px;padding:18px 20px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer;transition:box-shadow 0.2s;';
+    card.onmouseenter = () => card.style.boxShadow = '0 4px 16px rgba(43,95,164,0.08)';
+    card.onmouseleave = () => card.style.boxShadow = 'none';
+    card.innerHTML = `
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div style="width:40px;height:40px;background:#EEF3FB;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.1rem;flex-shrink:0;">
+          <i class="fa-solid fa-passport"></i>
+        </div>
+        <div>
+          <div style="font-weight:600;color:var(--ink);font-size:0.9375rem;">${app.name}</div>
+          <div style="font-size:0.8rem;color:var(--ink-soft);">${app.service} · ${app.submittedOn}</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-family:'Lora',serif;font-size:0.78rem;color:var(--ink-soft);">${app.appId}</span>
+        <span class="status-badge status-${app.status}" style="font-size:0.72rem;padding:4px 10px;">${getStatusLabel(app.status)}</span>
+        <button onclick="quickLoad('${app.appId}')" style="padding:7px 14px;background:var(--accent);color:white;border:none;border-radius:8px;font-size:0.8rem;font-weight:600;cursor:pointer;font-family:'Source Sans 3',sans-serif;">View</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function quickLoad(appId) {
+  document.getElementById('track-input').value = appId;
+  doTrack();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function shareApp() {
+  if (!currentApp) return;
+  const url = window.location.origin + window.location.pathname + '?id=' + currentApp.appId;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(currentApp.appId).then(() => {
+      alert('Application ID copied to clipboard: ' + currentApp.appId);
+    });
+  } else {
+    alert('Your Application ID: ' + currentApp.appId);
+  }
+}
+
+function downloadTrackPDF() {
+  if (!currentApp) return;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const d = currentApp;
+  const pageW = 210;
+  const margin = 20;
+
+  doc.setFillColor(43, 95, 164);
+  doc.rect(0, 0, pageW, 38, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(18);
+  doc.text('PassportIndia', margin, 18);
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Application Status Receipt', margin, 26);
+  doc.text(new Date().toLocaleDateString('en-IN'), pageW - margin, 26, { align: 'right' });
+
+  doc.setFillColor(238, 243, 251);
+  doc.roundedRect(margin, 46, pageW - margin*2, 20, 4, 4, 'F');
+  doc.setTextColor(43, 95, 164);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('Application ID:', margin + 8, 55);
+  doc.setFontSize(14);
+  doc.text(d.appId, margin + 8, 62);
+
+  let y = 80;
+  function section(title) {
+    doc.setFillColor(43, 95, 164);
+    doc.rect(margin, y, pageW - margin*2, 8, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.text(title.toUpperCase(), margin + 4, y + 5.5);
+    y += 12;
+  }
+  function row(key, value) {
+    doc.setTextColor(100, 100, 100);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.text(key, margin + 4, y);
+    doc.setTextColor(28, 28, 28);
+    doc.setFont('helvetica', 'bold');
+    doc.text(String(value || '—'), margin + 55, y);
+    doc.setDrawColor(232, 228, 220);
+    doc.line(margin, y + 2.5, pageW - margin, y + 2.5);
+    y += 9;
+  }
+
+  section('Applicant & Application Details');
+  row('Full Name', d.name);
+  row('Application ID', d.appId);
+  row('Service Type', d.service);
+  row('Submitted On', d.submittedOn);
+  row('Current Status', getStatusLabel(d.status));
+
+  y += 4;
+  section('Appointment Information');
+  row('PSK Location', d.psk);
+  row('Appointment Date', d.date);
+  row('Appointment Time', d.time);
+  row('Application Fee', d.fee);
+  row('Processing Time', d.processing);
+
+  y += 4;
+  section('Progress Timeline');
+  d.timeline.forEach(item => {
+    row(item.label, item.done ? '✓ Completed' + (item.date ? ` (${item.date})` : '') : 'Pending');
+  });
+
+  doc.setFillColor(20, 20, 20);
+  doc.rect(0, 285, pageW, 12, 'F');
+  doc.setTextColor(150, 150, 150);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7.5);
+  doc.text('© 2026 PassportIndia · Assessment Demo · Helpline: 1800-258-1800', pageW/2, 292, { align: 'center' });
+
+  doc.save(`PassportIndia_Status_${d.appId}.pdf`);
+}
+
+document.getElementById('track-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doTrack();
+});
+</script>
+</body>
+</html>

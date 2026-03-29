@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PassportIndia – Easy Passport Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div class="scroll-dots" id="scrollDots">
+  <button class="scroll-dot active" data-label="Home" onclick="scrollTo_('#home')"></button>
+  <button class="scroll-dot" data-label="Services" onclick="scrollTo_('#services')"></button>
+  <button class="scroll-dot" data-label="Reviews" onclick="scrollTo_('#reviews')"></button>
+  <button class="scroll-dot" data-label="Consultation" onclick="scrollTo_('#consultation')"></button>
+  <button class="scroll-dot" data-label="Footer" onclick="scrollTo_('footer')"></button>
+</div>
+
+<nav id="mainNav">
+  <a class="logo" href="index.html">
+    <div class="logo-mark"><i class="fa-solid fa-passport"></i></div>
+    <span class="logo-text">Passport<span>India</span></span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#home">Home</a>
+    <a class="nav-link" href="#services">Services</a>
+    <a class="nav-link" href="#reviews">Reviews</a>
+    <a class="nav-link" href="track.html">Track Status</a>
+    <a class="nav-cta" href="apply.html">Apply Now</a>
+  </div>
+</nav>
+
+<section id="home">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-tag reveal">🇮🇳 Official Passport Services</div>
+      <h1 class="reveal reveal-delay-1">
+        Get Your Passport<br>
+        <em>Without the Hassle</em>
+      </h1>
+      <p class="hero-desc reveal reveal-delay-2">
+        We guide you through every step — from filling the form to booking your appointment. Simple, clear, and stress-free. No confusing jargon.
+      </p>
+      <div class="hero-actions reveal reveal-delay-3">
+        <a class="btn-primary" href="apply.html"> Start My Application</a>
+        <a class="btn-secondary" href="#services">See How It Works</a>
+      </div>
+      <div class="hero-trust reveal reveal-delay-4">
+        <div class="trust-item"><span class="t-icon"><i class="fa-solid fa-lock"></i></span> Safe &amp; Secure</div>
+        <div class="trust-sep"></div>
+        <div class="trust-item"><span class="t-icon"><i class="fa-solid fa-handshake-angle"></i></span> Help Available</div>
+        <div class="trust-sep"></div>
+        <div class="trust-item"><span class="t-icon"><i class="fa-regular fa-clock"></i></span> Takes ~35 Minutes</div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <div class="hero-panel">
+        <div class="hero-panel-title"><i class="fa-solid fa-list-check" style="color:var(--accent)"></i> How It Works — 4 Simple Steps</div>
+        <div class="steps-list">
+          <div class="step-row">
+            <div class="step-num">1</div>
+            <div><h5>Fill Your Details</h5><p>Enter your name, date of birth, and address. We help you at every field.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">2</div>
+            <div><h5>Upload Documents</h5><p>Aadhaar card, birth certificate, and a photo — that's all you need.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">3</div>
+            <div><h5>Book an Appointment</h5><p>Pick a date and time at your nearest Passport Office — at your convenience.</p></div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">4</div>
+            <div><h5>Receive Your Passport</h5><p>We track it and send you updates. Your passport arrives at your door.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="container">
+    <div class="services-header">
+      <div>
+        <div class="section-eyebrow reveal">What We Offer</div>
+        <h2 class="section-title reveal reveal-delay-1">Services Built<br>for Every Applicant</h2>
+      </div>
+      <p class="section-body reveal reveal-delay-2" style="max-width:340px;font-size:0.95rem;">
+        Whether you need a passport for the first time or are renewing one — we have a service that fits your situation.
+      </p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon-wrap"><i class="fa-regular fa-user"></i></div>
+        <h3>Fresh Passport</h3>
+        <p>Applying for the very first time? We walk you through each step, explain every document needed, and make sure nothing is missed.</p>
+        <span class="service-tag">Best for first-timers</span>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon-wrap"><i class="fa-solid fa-arrows-rotate"></i></div>
+        <h3>Renewal / Re-issue</h3>
+        <p>Passport expired or about to expire? We retrieve your old details and pre-fill most of the form for you — saving you time.</p>
+        <span class="service-tag">Faster process</span>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon-wrap"><i class="fa-solid fa-bolt-lightning"></i></div>
+        <h3>Tatkaal (Urgent)</h3>
+        <p>Need your passport quickly for a medical trip or emergency travel? We prioritise your case and get it done in as little as 7 days.</p>
+        <span class="service-tag">7-day delivery</span>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon-wrap"><i class="fa-solid fa-child"></i></div>
+        <h3>Child Passport</h3>
+        <p>Applying for your child? We guide parents through the special requirements including school certificates and birth records.</p>
+        <span class="service-tag">Family-friendly</span>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon-wrap"><i class="fa-solid fa-business-time"></i></div>
+        <h3>Appointment Booking</h3>
+        <p>We show you available slots at all nearby Passport Seva Kendras and book your appointment with a single click.</p>
+        <span class="service-tag">Instant booking</span>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon-wrap"><i class="fa-solid fa-arrow-trend-up"></i></div>
+        <h3>Status Tracking</h3>
+        <p>After applying, track your passport's progress in plain language — no confusing codes, just simple updates like "In Printing" or "Dispatched".</p>
+        <span class="service-tag">Live updates</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="container">
+    <div class="section-eyebrow reveal">Customer Stories</div>
+    <h2 class="section-title reveal reveal-delay-1">What Our Customers Say</h2>
+    <p class="section-body reveal reveal-delay-2">Real people, real experiences. Here is what they shared after using our service.</p>
+
+    <div class="reviews-grid" style="margin-top:48px;">
+      <div class="review-card reveal reveal-delay-1">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"I am 68 years old and had never applied online before. The team helped me at every step on the phone. My passport arrived in 12 days. I could not believe how easy it was!"</p>
+        <div class="review-author">
+          <div class="author-avatar av-gold">RS</div>
+          <div class="author-info"><h5>Nanami Kento</h5><p>Retired teacher, Jaipur</p></div>
+        </div>
+      </div>
+      <div class="review-card reveal reveal-delay-2">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"My daughter helped me start but I finished the form myself. The instructions were so clear — each field explained in simple Hindi and English both. Very happy."</p>
+        <div class="review-author">
+          <div class="author-avatar av-green">PM</div>
+          <div class="author-info"><h5>Geto Suguru</h5><p>Homemaker, Pune</p></div>
+        </div>
+      </div>
+      <div class="review-card reveal reveal-delay-3">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Used Tatkaal for my mother's medical trip abroad. Got the passport in 6 days. The booking and tracking features are excellent. 10 out of 10."</p>
+        <div class="review-author">
+          <div class="author-avatar av-blue">AK</div>
+          <div class="author-info"><h5>Gojo Satoru</h5><p>Software Engineer, Bengaluru</p></div>
+        </div>
+      </div>
+      <div class="review-card reveal reveal-delay-1">
+        <div class="stars">★★★★☆</div>
+        <p class="review-text">"I had to renew my passport after 10 years. They pre-filled my old details so I only had to check and confirm. Saved me at least an hour. The appointment was booked in under 5 minutes."</p>
+        <div class="review-author">
+          <div class="author-avatar av-rust">SV</div>
+          <div class="author-info"><h5>Toji Fushiguro</h5><p>Shop owner, Lucknow</p></div>
+        </div>
+      </div>
+      <div class="review-card reveal reveal-delay-2">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Applied for my child's first passport. Was very nervous about documents but the checklist made it so clear. Got a reminder call before the appointment too. Loved the service."</p>
+        <div class="review-author">
+          <div class="author-avatar av-teal">NG</div>
+          <div class="author-info"><h5>Hiromi Higuruma</h5><p>Teacher, Faridabad</p></div>
+        </div>
+      </div>
+      <div class="review-card reveal reveal-delay-3">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"As a student going abroad for higher studies, I needed my passport fast. The whole process online was smooth. The status tracking in plain language was very helpful and reduced my anxiety."</p>
+        <div class="review-author">
+          <div class="author-avatar av-plum">RD</div>
+          <div class="author-info"><h5>Yuji Itadori</h5><p>Student, Kolkata</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reviews-stat-row reveal" style="margin-top:48px;">
+      <div class="stat-block"><div class="num">4.9</div><div class="lbl">Average Rating (out of 5)</div></div>
+      <div class="stat-block"><div class="num">1.2L+</div><div class="lbl">Passports Processed</div></div>
+      <div class="stat-block"><div class="num">98%</div><div class="lbl">Customers Satisfied</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="consultation">
+  <div class="container">
+    <div class="cta-card reveal">
+      <div>
+        <div class="cta-eyebrow">Completely Free — No Charges</div>
+        <h2>Book a Free Consultation Today</h2>
+        <p>Not sure which service you need? Worried about documents? Talk to one of our passport experts — free of charge, in your language.</p>
+        <div class="cta-points">
+          <div class="cta-point"><div class="cta-check">✓</div> Talk to a real person, not a chatbot</div>
+          <div class="cta-point"><div class="cta-check">✓</div> Available in Hindi, English, and regional languages</div>
+          <div class="cta-point"><div class="cta-check">✓</div> Get a personalised document checklist</div>
+          <div class="cta-point"><div class="cta-check">✓</div> Monday to Saturday, 9 AM – 7 PM</div>
+        </div>
+      </div>
+      <div class="cta-form-side reveal reveal-delay-2">
+        <div class="cta-form">
+          <h4><i class="fa-solid fa-phone"></i> Request a Call Back</h4>
+          <div id="consultForm">
+            <div class="form-group">
+              <label>Your Full Name</label>
+              <input type="text" id="c-name" placeholder="e.g. Ramesh Kumar">
+            </div>
+            <div class="form-group">
+              <label>Mobile Number</label>
+              <input type="tel" id="c-phone" placeholder="e.g. 98765 43210">
+            </div>
+            <div class="form-group">
+              <label>What Do You Need Help With?</label>
+              <select id="c-type">
+                <option value="">— Select a Service —</option>
+                <option>Fresh Passport (First Time)</option>
+                <option>Passport Renewal</option>
+                <option>Tatkaal / Urgent Passport</option>
+                <option>Child Passport</option>
+                <option>Tracking My Application</option>
+                <option>I'm Not Sure — Need Guidance</option>
+              </select>
+            </div>
+            <button class="btn-cta-submit" onclick="submitConsult()"><i class="fa-solid fa-phone"></i> Book My Free Call</button>
+            <div class="form-note"><i class="fa-solid fa-shield-halved"></i> We never share your details. No spam calls.</div>
+          </div>
+          <div class="form-success" id="consultSuccess">
+            <div class="s-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <h5>Call Booked Successfully!</h5>
+            <p>Our expert will call you within 2 hours between 9 AM – 7 PM.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <div class="logo-mark" style="background:var(--accent);color:white;border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:1rem;"><i class="fa-solid fa-passport"></i></div>
+        <span style="font-family:'Lora',serif;font-size:1.1rem;font-weight:700;color:white;">PassportIndia</span>
+      </div>
+      <p>Making passport applications simple, clear, and stress-free for every Indian citizen — including first-timers and senior citizens.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <a class="footer-link" href="apply.html">Fresh Passport</a>
+      <a class="footer-link" href="apply.html">Renewal</a>
+      <a class="footer-link" href="apply.html">Tatkaal Urgent</a>
+      <a class="footer-link" href="apply.html">Child Passport</a>
+      <a class="footer-link" href="track.html">Status Tracking</a>
+    </div>
+    <div class="footer-col">
+      <h5>Help</h5>
+      <a class="footer-link" href="apply.html">Document Checklist</a>
+      <a class="footer-link" href="#consultation">Frequently Asked Questions</a>
+      <a class="footer-link" href="#consultation">Fee Calculator</a>
+      <a class="footer-link" href="#consultation">Find Nearest PSK</a>
+      <a class="footer-link" href="#consultation">Talk to an Expert</a>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <a class="footer-link"><i class="fa-solid fa-phone"></i> 1800-258-1800 (Free)</a>
+      <a class="footer-link"><i class="fa-solid fa-envelope"></i> help@passportindia.in</a>
+      <a class="footer-link"><i class="fa-regular fa-clock"></i> Mon–Sat, 9 AM to 7 PM</a>
+      <a class="footer-link" href="#consultation">Book Free Consultation</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 PassportIndia · A Demo website for assessment project</span>
+    <div class="footer-badges">
+      <span class="footer-badge"><i class="fa-solid fa-lock"></i> SSL Secured</span>
+      <span class="footer-badge">🇮🇳 Made in India</span>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
